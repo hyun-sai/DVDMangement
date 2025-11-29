@@ -11,12 +11,16 @@ import java.util.List;
 public class dvdController {
     private final dvdService dvdService;
 
+
+
     public dvdController(dvdService dvdService) {
+
         this.dvdService = dvdService;
     }
 
     @GetMapping("/dvdData")
         public List<ResponseDTO> getAllDvds(){
-            return dvdService.getAllDvds();
+
+        return dvdService.getAllDvds();
         }
 }

@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 public class dvdService {
     private dvdDao dao = new dvdDao();
 
+
     public List<ResponseDTO> getAllDvds() {
+
         return dao.findAllDvd();
     }
+
+
+
 }
