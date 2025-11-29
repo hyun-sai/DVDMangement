@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>검색창 예시</title>
+    <script src="https://kit.fontawesome.com/0ad2c507da.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #333333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 0;
+        }
+        main {
+            margin-top: 120px;
+        }
+        header{
+            width: 80%;
+            text-align: left;
+            margin: 0 auto;
+            color: white;
+            padding: 1px 0;
+            font-size: 12px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #ff4f81;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            opacity: 1;
+        }
+        header h1{
+            margin-left: 30px;
+        }
+        header a{
+            text-align: right;
+            margin-right: 30px;
+            font-size: 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        header a:hover {
+            color: #101010;  /* 밝은 핑크 색으로 변경 */
+            transform: scale(1.1);  /* 살짝 커지게 */
+        }
+        form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+            border-radius: 5px;
+            height: 50px;
+            width: 600px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            margin: 0 auto 20px auto;
+        }
+
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 5px;
+            height: 40px;
+            width: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+        list{
+            width: 80%;
+            margin-top: 20px;
+            padding: 60px;
+        }
+
+        .box {
+            width: 900px;
+            max-width: 95%;
+            height: 1000px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #222;
+            overflow-y: scroll;
+            border-radius: 8px;
+        }
+        .box::-webkit-scrollbar {
+            display: none;
+        }
+        #link {color: #E45635;display:block;font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;text-align:center; text-decoration: none;}
+        #link:hover {color: #CCCCCC}
+
+        #link, #link:hover {-webkit-transition: color 0.5s ease-out;-moz-transition: color 0.5s ease-out;-ms-transition: color 0.5s ease-out;-o-transition: color 0.5s ease-out;transition: color 0.5s ease-out;}
+
+        /** BEGIN CSS **/
+        @keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-moz-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-webkit-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-o-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-moz-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-webkit-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-o-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+
+        @-moz-keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+
+        @-webkit-keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+
+        @-o-keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+        .loading-container,
+        .loading {
+            height: 100px;
+            position: relative;
+            width: 100px;
+            border-radius: 100%;
+        }
+
+
+        .loading-container { margin: 40px auto }
+
+        .loading {
+            border: 2px solid transparent;
+            border-color: transparent #fff transparent #FFF;
+            -moz-animation: rotate-loading 1.5s linear 0s infinite normal;
+            -moz-transform-origin: 50% 50%;
+            -o-animation: rotate-loading 1.5s linear 0s infinite normal;
+            -o-transform-origin: 50% 50%;
+            -webkit-animation: rotate-loading 1.5s linear 0s infinite normal;
+            -webkit-transform-origin: 50% 50%;
+            animation: rotate-loading 1.5s linear 0s infinite normal;
+            transform-origin: 50% 50%;
+        }
+
+        .loading-container:hover .loading {
+            border-color: transparent #E45635 transparent #E45635;
+        }
+        .loading-container:hover .loading,
+        .loading-container .loading {
+            -webkit-transition: all 0.5s ease-in-out;
+            -moz-transition: all 0.5s ease-in-out;
+            -ms-transition: all 0.5s ease-in-out;
+            -o-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+        }
+
+        #loading-text {
+            -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+            -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+            -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+            animation: loading-text-opacity 2s linear 0s infinite normal;
+            color: #ffffff;
+            font-family: "Helvetica Neue, "Helvetica", ""arial";
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 45px;
+            opacity: 0;
+            position: absolute;
+            text-align: center;
+            text-transform: uppercase;
+            top: 0;
+            width: 100px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background: #fff;
+            margin: 12% auto;
+            padding: 25px;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+
+        .close {
+            float: right;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+
+        .modal-form {
+            display: flex !important;
+            align-items: center;
+            gap: 3px;
+            margin: 20px auto 0 auto;
+            width: 28vh;
+        }
+
+        .modal-form input{
+            flex: none !important;
+            width: 60% !important;
+            height: auto !important;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc !important;
+            font-size: 15px;
+            background-color: white !important;
+        }
+        .modal-form select{
+            width: 80px;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            background-color: white;
+        }
+        #modalTitle {
+            font-size: 2rem;       /* 기존 크기 유지 */
+            font-weight: 800;
+            color: #2a2a3d  ;         /* 강조색 */
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        /* 모달 ID */
+        #modalId {
+            font-size: 0.9em;       /* 기존 크기 유지 */
+            color: #888;             /* 은은한 회색 */
+            text-align: center;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>DVD</h1>
+    <a>대여 정보</a>
+</header>
+<main>
+    <form action="" id = "searchForm" method="get">
+        <input type="text" id = "movie" placeholder="제목을 입력하세요.">
+        <button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </form>
+
+    <div class="loading-container" id = "loading">
+        <div class="loading"></div>
+        <div id="loading-text">로딩 중</div>
+    </div>
+
+    <div class ="box">
+        <div id = "movieList"></div>
+    </div>
+</main>
+<div id="movieModal" class="modal">
+    <div class="modal-content">
+        <span id="modalClose" class="close">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalId"></p>
+
+        <form class="modal-form" id="RegName" method="post">
+            <input type="text" id="name" placeholder="이름을 입력하시오.">
+            <select id="age">
+                <option value="" disabled selected>나이</option>
+            </select>
+            <button type="submit" id="saveModal">
+                <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<div id="rentModal" class="modal">
+    <div class="modal-content">
+        <span id="rentClose" class="close">&times;</span>
+        <h2 id="rentModalTitle">대여 정보</h2>
+        <div id="rentList" style="max-height: 400px; overflow-y: auto;">
+            <!-- 대여 정보 항목이 여기 동적으로 들어갑니다 -->
+        </div>
+    </div>
+</div>
+
+<script>
+    let allMovies = [];
+    window.addEventListener("DOMContentLoaded",async ()=>{
+        await loadMovies();
+        const searchForm = document.getElementById("searchForm");
+        searchForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const query = document.getElementById("movie").value.trim().toLowerCase();
+            displayMovies(allMovies.filter(movie => movie.title.toLowerCase().includes(query)));
+        });
+        {
+            const ageSelect = document.getElementById("age");
+            for (let i = 1; i <= 99; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+                option.text = i;
+                ageSelect.appendChild(option);}
+        }
+    });
+
+    async function loadMovies() {
+        try {
+            const loading = document.querySelector('#loading');
+            loading.style.display = "block";
+
+            const res = await fetch("/dvdData");
+            if (!res.ok) throw new Error("서버 응답 실패");
+
+            allMovies = await res.json();
+            displayMovies(allMovies);
+
+            loading.style.display = "none";
+        } catch (err) {
+            console.error(err);
+            alert("데이터를 불러오기 실패!");
+        }
+    }
+
+    function displayMovies(movies) {
+        const movieList = document.getElementById("movieList");
+        movieList.innerHTML = "";
+
+        if (movies.length === 0) {
+            movieList.innerHTML = "<p style='color:white;'>검색된 영화가 없습니다.</p>";
+            return;
+        }
+
+        movies.forEach(movie => {
+            const div = document.createElement("div");
+            div.addEventListener("click", () => {
+                openModal(movie);
+            });
+            div.style.backgroundColor = "#1a1f5e";
+            div.style.color = "white";
+            div.style.marginBottom = "15px";
+            div.style.padding = "20px";
+            div.style.borderRadius = "8px";
+            div.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
+            div.innerHTML = `
+        <div style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">
+            <span style="font-size: 1.5em; font-weight: bold; color: #ffeb3b;">${movie.title}</span>
+            <span style="font-size: 0.8em; color: #ccc;">(ID: ${movie.id})</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.95em;">
+            <p style="margin: 3px 0;">
+                발매일: ${movie.date}
+            </p>
+            <p style="margin: 3px 0;">
+                관객 수: <span style="font-weight: bold; color: #8bc34a;">${Number(movie.audience).toLocaleString()}</span>
+            </p>
+        </div>
+        <div style="text-align: right; margin-top: 10px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            등급: <span style="font-weight: bold; color: #00bcd4;">${movie.grade}세 이상</span>
+        </div>
+    `;
+            movieList.appendChild(div);
+        });
+    }
+    function openModal(movie) {
+        document.getElementById("modalTitle").innerText =  `-${movie.title}-`;
+        document.getElementById("modalId").innerText = "영화 ID: " + movie.id;
+        document.getElementById("movieModal").style.display = "block";
+    }
+
+    // === 모달 닫기 ===
+    document.getElementById("modalClose").addEventListener("click", () => {
+        document.getElementById("movieModal").style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+        const modal = document.getElementById("movieModal");
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    document.getElementById("saveModal").addEventListener("click", async (e) => {
+        e.preventDefault();
+        const userName = document.getElementById("name").value.trim();
+        const userAge = document.getElementById("age").value;
+        const movieTitle = document.getElementById("modalTitle").innerText;
+        const movieIdText = document.getElementById("modalId").innerText;
+        const movieId = movieIdText.split(":")[1].trim();
+
+
+        if (!userName || !userAge) {
+            alert("이름과 나이를 모두 입력하세요!");
+            return;
+        }
+
+        try {
+            const res = await fetch("/rentMovie", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userName,
+                    userAge,
+                    movieId,
+                    movieTitle
+                })
+            });
+            const data = await res.json()
+            if (data.success) {
+                alert("대여 등록 완료!");
+                document.getElementById("movieModal").style.display = "none";
+            } else {
+                alert("대여등록실패.");
+            }
+        }catch(err){
+            console.error(err);
+            alert("에러 발생!");
+        }
+        alert(`이름: ${userName}\n나이: ${userAge}\nID: ${movieId}\n제목: ${movieTitle}`);
+        document.getElementById("movieModal").style.display = "none";
+    });
+
+
+    document.querySelector("header a").addEventListener("click", async () => {
+        const rentModal = document.getElementById("rentModal");
+        const rentList = document.getElementById("rentList");
+
+        rentList.innerHTML = "";
+        try {
+            const res = await fetch("/rentData");
+            const data = await res.json();
+
+            if (data.length === 0) {
+                rentList.innerHTML = "<p>등록된 대여 정보가 없습니다.</p>";
+            } else {
+                data.forEach(item => {
+                    const div = document.createElement("div");
+                    div.style.padding = "10px";
+                    div.style.borderBottom = "1px solid #ccc";
+                    div.innerHTML = `
+                    <strong>${item.movieTitle}</strong> (ID: ${item.movieId})<br>
+                    이름: ${item.userName}, 나이: ${item.userAge}
+                `;
+                    rentList.appendChild(div);
+                });
+            }
+
+            rentModal.style.display = "block";
+        } catch (err) {
+            console.error(err);
+            alert("대여 정보 불러오기 실패!");
+        }
+    });
+
+
+    document.getElementById("rentClose").addEventListener("click", () => {
+        document.getElementById("rentModal").style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+        if (e.target === document.getElementById("rentModal")) {
+            document.getElementById("rentModal").style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>

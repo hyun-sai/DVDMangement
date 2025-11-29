@@ -1,9 +1,13 @@
 package com.example.dvdmangement.controller;
 
+import com.example.dvdmangement.dto.RequestDTO;
 import com.example.dvdmangement.dto.ResponseDTO;
 import com.example.dvdmangement.service.dvdService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.List;
 
@@ -14,7 +18,6 @@ public class dvdController {
 
 
     public dvdController(dvdService dvdService) {
-
         this.dvdService = dvdService;
     }
 
@@ -23,4 +26,18 @@ public class dvdController {
 
         return dvdService.getAllDvds();
         }
+
+    @PostMapping("/rentMovie")
+        public String rentMovie(@RequestBody RequestDTO request){
+
+        String name = request.getUserName();
+        Integer age = request.getUserAge();
+        Integer movieId = request.getMovieId();
+        String movieTitle = request.getMovieTitle();
+
+        dvdService.rentMovie(name, age, movieId, movieTitle);
+
+
+        return "{\"success\": true}";
+    }
 }

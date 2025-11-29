@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
     public class dvdDao {
         public List<ResponseDTO> findAllDvd() {
-
             Connection conn = null;
             Statement stmt = null;
             ResultSet rs = null;

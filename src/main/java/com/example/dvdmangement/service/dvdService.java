@@ -15,6 +15,10 @@ public class dvdService {
         return dao.findAllDvd();
     }
 
+    public void rentMovie(String name, int age, int movieId, String movieTitle) {
+
+    }
+
 
 
 }

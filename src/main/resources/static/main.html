@@ -315,7 +315,7 @@
         <h2 id="modalTitle"></h2>
         <p id="modalId"></p>
 
-        <form class="modal-form" id="RegName" method="get">
+        <form class="modal-form" id="RegName" method="post">
             <input type="text" id="name" placeholder="이름을 입력하시오.">
             <select id="age">
                 <option value="" disabled selected>나이</option>
@@ -424,7 +424,7 @@
         }
     });
 
-    document.getElementById("saveModal").addEventListener("click", () => {
+    document.getElementById("saveModal").addEventListener("click", async (e) => {
         const name = document.getElementById("userName").value.trim();
         const age = document.getElementById("userAge").value;
 
@@ -433,10 +433,33 @@
             return;
         }
 
+        try {
+            const res = await fetch("/rentMovie", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application.jason"
+                },
+                body: JSON.stringify({
+                    name,
+                    age,
+                    id,
+                    title
+                })
+            });
+            const data = await res.json()
+            if (data.success) {
+                alert("대여 등록 완료!");
+                document.getElementById("movieModal").style.display = "none";
+            } else {
+                alert("대여등록실패.");
+            }
+        }catch(err){
+            console.error(err);
+            alert("에러 발생!");
+            }
         alert(`저장 완료!\n이름: ${name}\n나이: ${age}`);
-
         document.getElementById("movieModal").style.display = "none";
-    })
+    });
 
 </script>
 
