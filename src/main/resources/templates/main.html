@@ -338,6 +338,7 @@
         <span id="modalClose" class="close">&times;</span>
         <h2 id="modalTitle"></h2>
         <p id="modalId"></p>
+        <p id = "rentAvailability"></p>
 
         <form class="modal-form" id="RegName" method="post">
             <input type="text" id="name" placeholder="이름을 입력하시오.">
@@ -357,7 +358,6 @@
         <span id="rentClose" class="close">&times;</span>
         <h2 id="rentModalTitle">대여 정보</h2>
         <div id="rentList" style="max-height: 400px; overflow-y: auto;">
-            <!-- 대여 정보 항목이 여기 동적으로 들어갑니다 -->
         </div>
     </div>
 </div>
@@ -421,9 +421,10 @@
             div.style.borderRadius = "8px";
             div.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
             div.innerHTML = `
-        <div style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">
+        <div style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;display: flex;">
             <span style="font-size: 1.5em; font-weight: bold; color: #ffeb3b;">${movie.title}</span>
             <span style="font-size: 0.8em; color: #ccc;">(ID: ${movie.id})</span>
+            <span style="font-weight: bold; color: #00bcd4;margin-left: auto">대여: ${movie.available ? '가능' : '불가능'}</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.95em;">
             <p style="margin: 3px 0;">
@@ -446,7 +447,6 @@
         document.getElementById("movieModal").style.display = "block";
     }
 
-    // === 모달 닫기 ===
     document.getElementById("modalClose").addEventListener("click", () => {
         document.getElementById("movieModal").style.display = "none";
     });
@@ -464,6 +464,7 @@
         const userAge = document.getElementById("age").value;
         const movieTitle = document.getElementById("modalTitle").innerText;
         const movieIdText = document.getElementById("modalId").innerText;
+        const rentAvailability = document.getElementById("modalId").innerText;
         const movieId = movieIdText.split(":")[1].trim();
 
 

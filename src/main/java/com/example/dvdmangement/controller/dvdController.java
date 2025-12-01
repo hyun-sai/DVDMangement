@@ -37,7 +37,6 @@ public class dvdController {
 
         dvdService.rentMovie(name, age, movieId, movieTitle);
 
-
         return "{\"success\": true}";
     }
 }

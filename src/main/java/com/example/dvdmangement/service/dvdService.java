@@ -17,6 +17,36 @@ public class dvdService {
 
     public void rentMovie(String name, int age, int movieId, String movieTitle) {
 
+        List<ResponseDTO>dvds = dao.findAllDvd();
+
+        ResponseDTO dvd = null;
+
+        for(ResponseDTO Id : dvds) {
+            if(Id.getId() == movieId) {
+                dvd = Id;
+                break;
+            }
+        }
+
+        if(dvd == null) {
+            throw new IllegalStateException("해당 제목의 영화가 존재하지 않습니다." + dvd);
+        }
+
+
+        if(dvd.getGrade()>age){
+            throw new IllegalStateException("해당 영화 관람 불가 연령입니다. 사용자 나이: " + age + "영화등급: " + dvd.getGrade());
+        }
+
+
+
+        dao.rentMovie(movieId, name, age);
+
+        System.out.println(
+                "[대여 완료] " + name + "님이 '" + dvd.getTitle()
+                        + "'(ID: " + movieId + ")를 대여했습니다."
+        );
+
+
     }
 
 
