@@ -452,7 +452,7 @@
         });
     }
     function openModal(movie) {
-        document.getElementById("modalTitle").innerText =  `-${movie.title}-`;
+        document.getElementById("modalTitle").innerText =  `${movie.title}`;
         document.getElementById("modalId").innerText = "영화 ID: " + movie.id;
         document.getElementById("movieModal").style.display = "block";
     }
@@ -499,14 +499,15 @@
             if (data.success) {
                 alert("대여 등록 완료!");
                 document.getElementById("movieModal").style.display = "none";
+                await loadMovies();
             } else {
-                alert("대여등록실패.");
+                alert(data.success || "연령 문제로 대여 등록에 실패했습니다.");
             }
         }catch(err){
             console.error(err);
             alert("에러 발생!");
         }
-        alert(`이름: ${userName}\n나이: ${userAge}\nID: ${movieId}\n제목: ${movieTitle}`);
+        alert(`이름: ${userName}\n나이: ${userAge}\nID: ${movieId}  제목: ${movieTitle}`);
         document.getElementById("movieModal").style.display = "none";
     });
 

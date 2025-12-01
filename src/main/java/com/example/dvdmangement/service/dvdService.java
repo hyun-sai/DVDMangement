@@ -1,6 +1,8 @@
 package com.example.dvdmangement.service;
 
 import java.util.List;
+
+import com.example.dvdmangement.dto.RequestDTO;
 import com.example.dvdmangement.dto.ResponseDTO;
 import com.example.dvdmangement.dao.dvdDao;
 import org.springframework.stereotype.Service;
@@ -9,12 +11,20 @@ import org.springframework.stereotype.Service;
 public class dvdService {
     private dvdDao dao = new dvdDao();
 
-
+    //movie 데이터 호출
     public List<ResponseDTO> getAllDvds() {
 
         return dao.findAllDvd();
     }
 
+    //대여된 DVD 데이터 호출
+    public List<ResponseDTO> getAllRents() {
+        //Dao 수정시 findAllDvd -> findAllRents로 수정
+        return null;
+    }
+
+
+    //DVD 대여
     public void rentMovie(String name, int age, int movieId, String movieTitle) {
 
         List<ResponseDTO>dvds = dao.findAllDvd();
@@ -38,17 +48,12 @@ public class dvdService {
         }
 
 
-
-        //dao.rentMovie(movieId, name, age);
+        //dao.rentMovie 작성 시 주석 제거
+        //dao.rentMovie(name, age, movieId);
 
         System.out.println(
                 "[대여 완료] " + name + "님이 '" + dvd.getTitle()
                         + "'(ID: " + movieId + ")를 대여했습니다."
         );
-
-
     }
-
-
-
 }

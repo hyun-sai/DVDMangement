@@ -17,9 +17,6 @@ public class ResponseDTO {
         this.available = available;
     }
 
-    /*
-    final은 setter가 필요없음!
-     */
     public int getId() {
         return id;
     }

@@ -21,12 +21,21 @@ public class dvdController {
         this.dvdService = dvdService;
     }
 
+    //movie 데이터 호출
     @GetMapping("/dvdData")
-        public List<ResponseDTO> getAllDvds(){
-
+    public List<ResponseDTO> getAllDvds(){
         return dvdService.getAllDvds();
-        }
+    }
 
+
+    //대여된 DVD 데이터 호출
+    @GetMapping("/rentData")
+    public List<ResponseDTO> getAllRents(){
+        return dvdService.getAllRents();
+    }
+
+
+    //DVD 대여
     @PostMapping("/rentMovie")
         public String rentMovie(@RequestBody RequestDTO request){
 
@@ -35,8 +44,12 @@ public class dvdController {
         Integer movieId = request.getMovieId();
         String movieTitle = request.getMovieTitle();
 
-        dvdService.rentMovie(name, age, movieId, movieTitle);
-
-        return "{\"success\": true}";
+        try {
+            dvdService.rentMovie(name, age, movieId, movieTitle);
+            return "{\"success\": true}";
+        }
+        catch (IllegalStateException  e){
+            return "{\"success\": false}";
+        }
     }
 }

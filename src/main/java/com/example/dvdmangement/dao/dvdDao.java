@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 
     public class dvdDao {
+
         public List<ResponseDTO> findAllDvd() {
             Connection conn = null;
             Statement stmt = null;
@@ -41,6 +42,7 @@ import java.time.LocalDateTime;
             }
             return movieList;
         }
+
 
 
 
