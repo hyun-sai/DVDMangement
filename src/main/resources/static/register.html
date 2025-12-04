@@ -280,15 +280,15 @@
     });
     // 회원가입 버튼 클릭 시
     async function signup() {
-        const userId = document.getElementById("signup-username").value;
+        const id = document.getElementById("signup-username").value;
         const password = document.getElementById("signup-password").value;
-        const username = document.getElementById("signup-name").value;
+        const name = document.getElementById("signup-name").value;
         const age = Number(document.getElementById("signup-age").value);
 
         const res = await fetch("/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, username, password, age })
+            body: JSON.stringify({name,age,id,password})
         });
 
         const text = await res.text();

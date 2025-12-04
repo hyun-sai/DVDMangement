@@ -16,6 +16,7 @@ public class userService {
 
     // 회원가입
     public void signup(UserDTO user) {
+        System.out.println(user);
         // 1) 아이디 중복 체크
         UserDTO existing = userDao.findByUsername(user.getId());
         if (existing != null) {
@@ -27,8 +28,8 @@ public class userService {
     }
 
     // 로그인
-    public UserDTO login(String userId, String password) {
-        UserDTO user = userDao.findByUsername(userId);
+    public UserDTO login(String Id, String password) {
+        UserDTO user = userDao.findByUsername(Id);
 
         if (user == null) {
             throw new IllegalStateException("아이디가 존재하지 않습니다.");

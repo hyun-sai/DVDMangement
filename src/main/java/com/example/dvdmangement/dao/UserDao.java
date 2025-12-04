@@ -17,56 +17,47 @@ public class UserDao {
     }
 
     // username으로 유저 찾기
-    public UserDTO findByUsername(String Id) {
-        // 로그인 아이디(username) -> user_id 컬럼으로 조회
-        String sql = "SELECT * FROM reuser WHERE id = ?";
+    public UserDTO findByUsername(String id) {
+        String sql = "SELECT User_ID, 이름, 나이, 아이디, 비밀번호 FROM user WHERE 아이디 = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, Id);
-
+            pstmt.setString(1, id);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     UserDTO user = new UserDTO();
-                    user.setUserid(Integer.valueOf(rs.getInt("User_ID")));          // PK
-                    user.setId(rs.getString("id"));                // 로그인 아이디
-
-                    user.setPassword(rs.getString("password"));
-                    user.setAge(rs.getInt("age"));
+                    user.setUserid(rs.getInt("User_ID"));    // PK
+                    user.setName(rs.getString("이름"));      // 이름
+                    user.setAge(rs.getInt("나이"));          // 나이
+                    user.setId(rs.getString("아이디"));      // 아이디
+                    user.setPassword(rs.getString("비밀번호")); // 비번
                     return user;
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
 
+        return null; // 없으면 null
+    }
     // 회원 저장 (회원가입)
     public void save(UserDTO user) {
-        String sql = "INSERT INTO reuser(id, username, password, age, rentDvdId, rentDvdTitle) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user(이름, 나이, 아이디, 비밀번호) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            // 1) 로그인 아이디 → user_id
-            pstmt.setString(1, user.getId());
-
-            // 2) 실제 이름 → username (프론트에서 name을 받으면 DTO에 name 필드 하나 더 추가)
-            // 일단 이름을 안 쓰면 공백으로 넣어두자
-            pstmt.setString(2, user.getName()); // 또는 user.getName()
-
-            pstmt.setString(3, user.getPassword());
-            pstmt.setInt(4, user.getAge());
+            pstmt.setString(1, user.getName());     // 이름
+            pstmt.setInt(2, user.getAge());        // 나이
+            pstmt.setString(3, user.getId());      // 아이디
+            pstmt.setString(4, user.getPassword()); // 비밀번호
 
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 }

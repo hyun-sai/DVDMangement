@@ -15,6 +15,7 @@ public class userController {
     // 회원가입
     @PostMapping("/signup")
     public String signup(@RequestBody UserDTO user) {
+        System.out.println(user);
         userService.signup(user);
         return "회원가입이 완료되었습니다.";
     }

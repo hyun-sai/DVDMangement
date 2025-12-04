@@ -161,7 +161,7 @@ public class dvdDao {
 
     // ------------------------------------------------------------------------------------------------------------------
 
-    public void returnMovie(int userId, int movieId) {
+    public void returnMovie(int rental_id) {
         LocalDateTime returnDate = LocalDateTime.now(); // 변수 이름 수정
         Connection conn = null;
         PreparedStatement pstmt = null;
