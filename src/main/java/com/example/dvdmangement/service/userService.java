@@ -17,7 +17,7 @@ public class userService {
     // 회원가입
     public void signup(UserDTO user) {
         // 1) 아이디 중복 체크
-        UserDTO existing = userDao.findByUsername(user.getUsername());
+        UserDTO existing = userDao.findByUsername(user.getId());
         if (existing != null) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }

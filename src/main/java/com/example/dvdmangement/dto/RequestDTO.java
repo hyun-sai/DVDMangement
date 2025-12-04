@@ -2,13 +2,14 @@ package com.example.dvdmangement.dto;
 
 public class RequestDTO {
     private String userName;
+    private Integer user_Id;
     private Integer userAge;
     private String movieTitle;
     private Integer movieId;
 
     public RequestDTO() {}
 
-    public RequestDTO(String userName, Integer userAge, String movieTitle, Integer movieId) {
+    public RequestDTO(String userName,Integer user_Id, Integer userAge, String movieTitle, Integer movieId) {
         this.userName = userName;
         this.userAge = userAge;
         this.movieTitle = movieTitle;
@@ -39,4 +40,12 @@ public class RequestDTO {
     public void setMovieId(Integer movieId) {
         this.movieId = movieId;
     }
+    public Integer getUser_Id() {
+        return user_Id;
+    }
+    public void setUser_Id(Integer user_Id) {
+        this.user_Id = user_Id;
+    }
 }
+
+

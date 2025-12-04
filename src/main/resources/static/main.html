@@ -419,8 +419,15 @@
 
 <script>
     let allMovies = [];
+    let allUser = [];
+    const user_id = allUser[0];
+    const userName = allUser[1];
+    const userAge = allUser[2];
+    const ID = allUser[3];
+
     window.addEventListener("DOMContentLoaded",async ()=>{
         await loadMovies();
+        await loadUserInfo();
         const token = localStorage.getItem('jwtToken');
         document.getElementById("logout").addEventListener("click", logout);
 
@@ -481,6 +488,15 @@
             console.error(err);
             alert("데이터를 불러오기 실패!");
         }
+    }
+
+    async function loadUserInfo() {
+        const res = await fetch("/getUser");
+        if(!res.ok) throw new Error("서버 응답 실패");
+
+        allUser = await res.json();
+        console.log(allUser);
+
     }
 
     function displayMovies(movies) {
@@ -562,7 +578,7 @@
 
 
         if (!userName || !userAge) {
-            alert("이름과 나이를 모두 입력하세요!");
+            alert("아이디와 나이를 입력하세요!");
             return;
         }
 
@@ -575,10 +591,8 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    userName,
-                    userAge,
-                    movieId,
-                    movieTitle
+                    user_id,
+                    movieId
                 })
             });
             const data = await res.json()
@@ -603,40 +617,52 @@
         const rentModal = document.getElementById("rentModal");
         const rentList = document.getElementById("rentList");
 
-        rentList.innerHTML = "";
+        rentList.innerHTML = ""; // 초기화
+
         try {
-            const res = await fetch("/rentData");
+            const res = await fetch("/rentData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: user_id })
+            });
+
             const data = await res.json();
 
             if (data.length === 0) {
                 rentList.innerHTML = "<p>등록된 대여 정보가 없습니다.</p>";
             } else {
                 data.forEach(item => {
+
                     const div = document.createElement("div");
                     div.classList.add("rent-item");
 
+                    // 정보 출력
                     const infoDiv = document.createElement("div");
                     infoDiv.innerHTML = `
-        <strong>${item.title}</strong> (ID: ${item.movieId})<br>
-        이름: ${item.userName}, 나이: ${item.userAge}, <br>대여일: ${item.rentalDate}
-    `;
+                    <strong>${item.title}</strong> (ID: ${item.movieId})<br>
+                    이름: ${item.userName}, 나이: ${item.userAge}<br>
+                    대여일: ${item.rentalDate}
+                `;
 
+                    // 반납 버튼
                     const returnBtn = document.createElement("button");
                     returnBtn.innerHTML = '<i class="fa-solid fa-retweet"></i>';
-
                     returnBtn.classList.add("returnBtn");
 
+                    // 버튼 클릭 이벤트 (item 정상 인식)
                     returnBtn.addEventListener("click", async () => {
                         try {
                             const res = await fetch("/returnMovie", {
                                 method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({ movieId: item.movieId,  })
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ movieId: item.movieId })
                             });
-                            const data = await res.json();
-                            if (data.success) {
+
+                            const result = await res.json();
+
+                            if (result.success) {
                                 alert(`${item.title} 반납 완료`);
-                                div.remove();
+                                div.remove(); // 해당 항목 삭제
                             } else {
                                 alert("반납 실패!");
                             }
@@ -646,18 +672,22 @@
                         }
                     });
 
+                    // 하나의 div에 info + 버튼 추가
                     div.appendChild(infoDiv);
-                    div.appendChild(returnBtn); // 오른쪽 끝에 배치
+                    div.appendChild(returnBtn);
+
                     rentList.appendChild(div);
                 });
             }
 
-            rentModal.style.display = "block";
+            rentModal.style.display = "block"; // 모달 보이기
+
         } catch (err) {
             console.error(err);
             alert("대여 정보 불러오기 실패!");
         }
     });
+
 
 
     document.getElementById("rentClose").addEventListener("click", () => {

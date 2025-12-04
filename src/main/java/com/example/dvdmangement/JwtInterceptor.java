@@ -23,7 +23,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         try {
             String username = JwtUtil.getUserId(token);
-            // 컨트롤러에서 꺼내 쓸 수 있도록 request에 저장
             request.setAttribute("username", username);
             return true;
         } catch (Exception e) {

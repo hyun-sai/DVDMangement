@@ -31,13 +31,15 @@ public class dvdController {
         return dvdService.getAllDvds();
     }
 
+    @GetMapping("/getUser")
+    public List<UserDTO> getUser(){
+        return dvdService.getUser();}
 
-    //대여된 DVD 데이터 호출
-    @GetMapping("/rentData")
-    public List<rentalInfoDTO> getAllRents(){
-        return dvdService.getAllRents();
+    @PostMapping("/rentData")
+    public List<rentalInfoDTO> getAllRents(@RequestBody Map<String, Object> request) {
+        int userId = (int) request.get("user_id");
+        return dvdService.getAllRents(userId);
     }
-
 
     // DVD 대여 (JWT 기반)
     @PostMapping("/rentMovie")
@@ -58,17 +60,20 @@ public class dvdController {
         }
 
         Integer movieId = request.getMovieId();
+        Integer userId = request.getUser_Id();
+
         String movieTitle = request.getMovieTitle();
 
         try {
             // ✅ 이제 name/age는 JWT 기반 유저 정보 사용
-            dvdService.rentMovie(user.getUsername(), user.getAge(), movieId, movieTitle);
+            dvdService.rentMovie(userId,movieId);
             return "{\"success\": true}";
         } catch (IllegalStateException e) {
             return "{\"success\": false}";
         }
     }
 
+    /*
     @PostMapping("/returnMovie")
         public String returnMovie(@RequestBody rentalInfoDTO rentalinfo){
 
@@ -84,4 +89,6 @@ public class dvdController {
         }
 
     }
+    *
+     */
 }

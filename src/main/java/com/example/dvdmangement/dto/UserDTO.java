@@ -9,11 +9,17 @@ import lombok.Setter;
 @NoArgsConstructor   // 기본 생성자
 public class UserDTO {
 
-    private String userId;        // user_id
-    private String username;      // JSON: "username"
-    private String password;      // JSON: "password"
-    private Integer age;              // JSON: "age"
+    private  int userid;
+    private  String name;
+    private  int age;
+    private  String id;
+    private  String password;
 
-    private Integer rentDvdId;        // 기본 0 = 아직 대여 없음
-    private String rentDvdTitle;  // null = 제목 없음
+    public UserDTO(int userid, String name, int age, String id, String password) {
+        this.userid = userid;
+        this.name = name;
+        this.age = age;
+        this.id = id;
+        this.password = password;
+    }
 }

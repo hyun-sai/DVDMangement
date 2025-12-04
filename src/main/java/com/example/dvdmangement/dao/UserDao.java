@@ -4,7 +4,6 @@ import com.example.dvdmangement.dto.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-
 @Repository
 public class UserDao {
 
@@ -18,25 +17,24 @@ public class UserDao {
     }
 
     // username으로 유저 찾기
-    public UserDTO findByUsername(String userId) {
+    public UserDTO findByUsername(String Id) {
         // 로그인 아이디(username) -> user_id 컬럼으로 조회
         String sql = "SELECT * FROM reuser WHERE id = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, userId);
+            pstmt.setString(1, Id);
+
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     UserDTO user = new UserDTO();
-                    user.setUserId(String.valueOf(rs.getInt("User_ID")));          // PK
-                    user.setUserId(rs.getString("id"));                // 로그인 아이디
+                    user.setUserid(Integer.valueOf(rs.getInt("User_ID")));          // PK
+                    user.setId(rs.getString("id"));                // 로그인 아이디
 
                     user.setPassword(rs.getString("password"));
                     user.setAge(rs.getInt("age"));
-                    user.setRentDvdId((Integer) rs.getObject("rentDvdId"));
-                    user.setRentDvdTitle(rs.getString("rentDvdTitle"));
                     return user;
                 }
             }
@@ -55,28 +53,14 @@ public class UserDao {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // 1) 로그인 아이디 → user_id
-            pstmt.setString(1, user.getUserId());
+            pstmt.setString(1, user.getId());
 
             // 2) 실제 이름 → username (프론트에서 name을 받으면 DTO에 name 필드 하나 더 추가)
             // 일단 이름을 안 쓰면 공백으로 넣어두자
-            pstmt.setString(2, user.getUsername()); // 또는 user.getName()
+            pstmt.setString(2, user.getName()); // 또는 user.getName()
 
             pstmt.setString(3, user.getPassword());
             pstmt.setInt(4, user.getAge());
-
-            Integer rentDvdId = user.getRentDvdId();
-            if (rentDvdId == null) {
-                pstmt.setNull(5, Types.INTEGER);
-            } else {
-                pstmt.setInt(5, rentDvdId);
-            }
-
-            String rentTitle = user.getRentDvdTitle();
-            if (rentTitle == null || rentTitle.isEmpty()) {
-                pstmt.setNull(6, Types.VARCHAR);
-            } else {
-                pstmt.setString(6, rentTitle);
-            }
 
             pstmt.executeUpdate();
         } catch (Exception e) {

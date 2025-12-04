@@ -23,8 +23,8 @@ public class userController {
     @PostMapping("/login")
     public String login(@RequestBody UserDTO loginReq) {
         // 아이디/비번 검증
-        UserDTO user = userService.login(loginReq.getUserId(), loginReq.getPassword());
+        UserDTO user = userService.login(loginReq.getId(), loginReq.getPassword());
 
-        return JwtUtil.createToken(user.getUserId());
+        return JwtUtil.createToken(user.getId());
     }
 }

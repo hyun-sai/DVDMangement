@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.dvdmangement.dto.RequestDTO;
 import com.example.dvdmangement.dto.ResponseDTO;
 import com.example.dvdmangement.dao.dvdDao;
+import com.example.dvdmangement.dto.UserDTO;
 import com.example.dvdmangement.dto.rentalInfoDTO;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,18 @@ public class dvdService {
         return dao.findAllDvd();
     }
 
+    public List<UserDTO> getUser(){
+        return dao.findAllUser();
+    }
+
     //대여된 DVD 데이터 호출
-    public List<rentalInfoDTO> getAllRents() {
-        //Dao 수정시 findAllDvd -> findAllRents로 수정
-        return dao.findAllRents();
+    public List<rentalInfoDTO> getAllRents(int userId) {
+        return dao.findAllRents(userId);
     }
 
 
     //DVD 대여
-    public void rentMovie(String name, int age, int movieId, String movieTitle) {
+    public void rentMovie(int userId,int movieId) {
 
         List<ResponseDTO>dvds = dao.findAllDvd();
 
@@ -44,22 +48,18 @@ public class dvdService {
         }
 
 
-        if(dvd.getGrade()>age){
-            throw new IllegalStateException("해당 영화 관람 불가 연령입니다. 사용자 나이: " + age + "영화등급: " + dvd.getGrade());
-        }
-
-
-        dao.rentMovie(name, age, movieId);
+        dao.rentMovie(userId, movieId);
 
         System.out.println(
-                "[대여 완료] " + name + "님이 '" + dvd.getTitle()
+                "[대여 완료] " + userId + "님이 '" + dvd.getTitle()
                         + "'(ID: " + movieId + ")를 대여했습니다."
         );
     }
 
+/*
     public void returnMovie(int movieId, int userId) {
 
-        List<rentalInfoDTO>Ids = dao.findAllRents();
+        List<rentalInfoDTO>Ids = dao.findAllRents(userId);
 
         rentalInfoDTO Id = null;
 
@@ -69,8 +69,9 @@ public class dvdService {
                 break;
             }
         }
-
-        dao.returnMovie(movieId, userId);
-
+        dao.returnMovie( userId, movieId);
     }
+
+ */
+
 }

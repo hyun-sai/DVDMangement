@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+
+    <!-- 폰트 (선택) -->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+            rel="stylesheet"
+    />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #333333, #333333);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header{
+            width: 80%;
+            text-align: left;
+            margin: 0 auto;
+            color: white;
+            padding: 1px 0;
+            font-size: 12px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #ff4f81;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            z-index: 1000;
+            opacity: 1;
+        }
+        header h1{
+            margin-left: 30px;
+        }
+        header a{
+            text-align: right;
+            margin-right: 30px;
+            font-size: 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        header a:hover {
+            color: #101010;
+            transform: scale(1.1);
+        }
+        .signup-wrapper {
+            width: 100%;
+            max-width: 420px;
+            padding: 16px;
+        }
+
+        .signup-card {
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.25);
+            padding: 28px 26px 26px;
+        }
+
+        .signup-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0 0 4px;
+            color: #0f172a;
+        }
+
+        .signup-subtitle {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.2s;
+            background-color: #f9fafb;
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            background-color: #ffffff;
+        }
+
+        .form-input:disabled {
+            background-color: #e5e7eb;
+            cursor: not-allowed;
+        }
+
+        .helper-text {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            border-radius: 999px;
+            padding: 11px 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.08s ease-out, box-shadow 0.12s ease-out,
+            filter 0.1s ease-out;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+        }
+
+        .submit-btn:hover {
+            filter: brightness(1.05);
+            box-shadow: 0 14px 26px rgba(37, 99, 235, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .bottom-text a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .bottom-text a:hover {
+            text-decoration: underline;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            min-height: 1.1em;
+        }
+
+        .status-message.success {
+            color: #16a34a;
+        }
+
+        .status-message.error {
+            color: #dc2626;
+        }
+
+        @media (max-width: 480px) {
+            .signup-card {
+                padding: 22px 18px 20px;
+                border-radius: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>DVD</h1>
+</header>
+<div class="signup-wrapper">
+    <div class="signup-card">
+        <h1 class="signup-title">회원가입</h1>
+        <p class="signup-subtitle">DVD 대여 시스템 이용을 위해 계정을 만들어 주세요.</p>
+
+        <form id="signup-form" onsubmit="handleSignup(event)">
+            <!-- 아이디 -->
+            <div class="form-group">
+                <label for="signup-username" class="form-label">아이디</label>
+                <input
+                        type="text"
+                        id="signup-username"
+                        class="form-input"
+                        required
+                />
+                <div class="helper-text">영문/숫자 조합으로 입력해 주세요.</div>
+            </div>
+
+            <!-- 비밀번호 -->
+            <div class="form-group">
+                <label for="signup-password" class="form-label">비밀번호</label>
+                <input
+                        type="password"
+                        id="signup-password"
+                        class="form-input"
+                        placeholder="8자 이상 입력"
+                        required
+                        minlength="4"
+                />
+            </div>
+            <div class="form-group">
+                <label for="signup-name" class="form-label">이름</label>
+                <input
+                        type="text"
+                        id="signup-name"
+                        class="form-input"
+                        placeholder="실제 이름을 입력해 주세요."
+                        required
+                />
+            </div>
+            <div class="form-group">
+                <label for="signup-age" class="form-label">나이</label>
+                <input
+                        type="number"
+                        id="signup-age"
+                        class="form-input"
+                        placeholder="예: 21"
+                        required
+                        min="1"
+                />
+                <div class="helper-text">연령 제한 영화 대여를 위해 필요합니다.</div>
+            </div>
+
+            <button id = "register" type="submit" class="submit-btn">회원가입 완료</button>
+
+            <div id="status" class="status-message"></div>
+
+            <div class="bottom-text">
+                이미 계정이 있으신가요?
+                <a href="/login.html">로그인 하러가기</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const registerBtn = document.getElementById("register");
+
+        registerBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            await signup();
+        });
+    });
+    // 회원가입 버튼 클릭 시
+    async function signup() {
+        const userId = document.getElementById("signup-username").value;
+        const password = document.getElementById("signup-password").value;
+        const username = document.getElementById("signup-name").value;
+        const age = Number(document.getElementById("signup-age").value);
+
+        const res = await fetch("/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, username, password, age })
+        });
+
+        const text = await res.text();
+        alert(text);
+        //location.href = "/login.html";
+    }
+</script>
+</body>
+</html>

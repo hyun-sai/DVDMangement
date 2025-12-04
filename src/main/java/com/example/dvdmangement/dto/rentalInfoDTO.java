@@ -1,33 +1,31 @@
 package com.example.dvdmangement.dto;
 
+import lombok.Getter;
+
 public class rentalInfoDTO {
-    private final String userName;
-    private final int userAge;
+    @Getter
     private final int userId;
+    @Getter
+    private final String userName;
+    @Getter
+    private final int userAge;
+    @Getter
+    private final int Id;
+    @Getter
     private final String title;
+    @Getter
     private final String rentalDate;
+    @Getter
     private final int movieId;
 
-    public rentalInfoDTO(String userName, int userAge, int userId,String title,String rentalDate, int movieId) {
+    public rentalInfoDTO(int userId, String userName, int userAge,int Id, String title, String rentalDate, int movieId) {
+        this.userId = userId;
         this.userName = userName;
         this.userAge = userAge;
+        this.Id = Id;
         this.title = title;
         this.rentalDate = rentalDate;
         this.movieId = movieId;
-        this.userId = userId;
     }
-    public String getUserName() {return userName;}
-    public int getUserAge() {
-        return userAge;
-    }
-    public String getTitle() {return title;}
-    public String getRentalDate() {
-        return rentalDate;
-    }
-    public int getMovieId() {
-        return movieId;
-    }
-    public int getUserId() {
-        return userId;
-    }
+
 }
