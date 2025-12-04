@@ -316,7 +316,7 @@
         }
 
         /* 모달 ID */
-        #modalId {
+        #modalId, #modalGrade {
             font-size: 0.9em;       /* 기존 크기 유지 */
             color: #888;             /* 은은한 회색 */
             text-align: center;
@@ -392,13 +392,11 @@
         <span id="modalClose" class="close">&times;</span>
         <h2 id="modalTitle"></h2>
         <p id="modalId"></p>
+        <p id="modalGrade"></p>
         <p id = "rentAvailability"></p>
 
         <form class="modal-form" id="RegName" method="post">
-            <input type="text" id="name" placeholder="이름을 입력하시오.">
-            <select id="age">
-                <option value="" disabled selected>나이</option>
-            </select>
+            <input type="text" id="name" placeholder="비밀번호를 입력하시오.">
             <button type="submit" id="saveModal">
                 <i class="fa-solid fa-floppy-disk"></i>
             </button>
@@ -420,10 +418,6 @@
 <script>
     let allMovies = [];
     let allUser = [];
-    const user_id = allUser[0];
-    const userName = allUser[1];
-    const userAge = allUser[2];
-    const ID = allUser[3];
 
     window.addEventListener("DOMContentLoaded",async ()=>{
         await loadMovies();
@@ -492,11 +486,12 @@
 
     async function loadUserInfo() {
         const res = await fetch("/getUser");
-        if(!res.ok) throw new Error("서버 응답 실패");
+        if (!res.ok) throw new Error("서버 응답 실패");
 
-        allUser = await res.json();
-        console.log(allUser);
+        const users = await res.json();
+        console.log(users);
 
+        allUser = users;
     }
 
     function displayMovies(movies) {
@@ -554,6 +549,7 @@
     function openModal(movie) {
         document.getElementById("modalTitle").innerText =  `${movie.title}`;
         document.getElementById("modalId").innerText = "영화 ID: " + movie.id;
+        document.getElementById("modalGrade").innerText = "등급: "+ movie.grade;
         document.getElementById("movieModal").style.display = "block";
     }
 
@@ -570,20 +566,33 @@
 
     document.getElementById("saveModal").addEventListener("click", async (e) => {
         e.preventDefault();
-        const userName = document.getElementById("name").value.trim();
-        const userAge = document.getElementById("age").value;
+        const userPassword = document.getElementById("name").value.trim();
         const movieTitle = document.getElementById("modalTitle").innerText;
         const movieIdText = document.getElementById("modalId").innerText;
         const movieId = movieIdText.split(":")[1].trim();
+        const movieGrade = document.getElementById("modalGrade").innerText;
 
+        await loadUserInfo();
 
-        if (!userName || !userAge) {
-            alert("아이디와 나이를 입력하세요!");
+        const userid = allUser[0].userid;
+        const userName = allUser[0].name;
+        const userAge = allUser[0].age;
+        const ID = allUser[0].id;
+        const password = allUser[0].password;
+        console.log(userid)
+
+        if (userPassword!=password) {
+            alert("비밀번호 재입력하시오!");
+            return;
+        }
+        if (userAge < movieGrade) {
+            alert(`연령 미달로 대여할 수 없습니다.\n필요 등급: ${movieGrade}세\n당신 나이: ${userAge}세`);
             return;
         }
 
         try {
             const token = localStorage.getItem("jwtToken");
+            console.log("token: ",token);
             const res = await fetch("/rentMovie", {
                 method: "POST",
                 headers: {
@@ -591,7 +600,7 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    user_id,
+                    userid,
                     movieId
                 })
             });
@@ -602,8 +611,8 @@
                 document.getElementById("movieModal").style.display = "none";
                 await loadMovies();
             } else {
-                alert(data.success || "연령 문제로 대여 등록에 실패했습니다.");
-                alert(`이름: ${userName} 나이: ${userAge} 등급: ${movie.grade}`);
+                alert(data.success);
+                alert(`이름: ${userName} 나이: ${userAge} 등급: ${movieGrade}`);
             }
         }catch(err){
             console.error(err);
@@ -619,11 +628,21 @@
 
         rentList.innerHTML = ""; // 초기화
 
+
+        await loadUserInfo();
+
+        const userid = allUser[0].userid;
+        const userName = allUser[0].name;
+        const userAge = allUser[0].age;
+        const ID = allUser[0].id;
+        const password = allUser[0].password;
+        console.log(userid)
+
         try {
             const res = await fetch("/rentData", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user_id: user_id })
+                body: JSON.stringify({ user_id: userid })
             });
 
             const data = await res.json();
@@ -655,14 +674,15 @@
                             const res = await fetch("/returnMovie", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ movieId: item.movieId })
+                                body: JSON.stringify({Id: item.Id})
                             });
 
                             const result = await res.json();
 
                             if (result.success) {
                                 alert(`${item.title} 반납 완료`);
-                                div.remove(); // 해당 항목 삭제
+                                div.remove();
+                                await loadMovies();
                             } else {
                                 alert("반납 실패!");
                             }

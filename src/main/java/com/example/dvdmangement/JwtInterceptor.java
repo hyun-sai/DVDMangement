@@ -22,8 +22,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = authHeader.substring(7);
 
         try {
-            String username = JwtUtil.getUserId(token);
-            request.setAttribute("username", username);
+            String id = JwtUtil.getUserId(token);
+            request.setAttribute("id", id);
             return true;
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

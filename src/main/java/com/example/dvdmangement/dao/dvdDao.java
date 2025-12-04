@@ -78,13 +78,13 @@ public class dvdDao {
             // conn.setAutoCommit(false); // 조회(SELECT)에는 필요 없으므로 제거
 
             String sql = "SELECT " +
-                    "    U.user_id            "+
-                    "    U.이름            "+
-                    "    U.나이      "+
-                    "    R.Rental_ID "+
+                    "    U.User_ID, " +
+                    "    U.이름, " +
+                    "    U.나이, " +
+                    "    R.Rental_ID, " +
                     "    M.제목, " +
                     "    R.대여일, " +
-                    "    M.movie_ID" +
+                    "    M.Movie_ID " +
                     "FROM " +
                     "    User U " +
                     "JOIN " +
@@ -104,13 +104,13 @@ public class dvdDao {
                 int userID = rs.getInt("User_ID");
                 String userName = rs.getString("이름");
                 int userAge = rs.getInt("나이");
-                int rentalid = rs.getInt("Rental_ID");
+                int Id = rs.getInt("Rental_ID");
                 String title = rs.getString("제목");
                 String rentalDate = rs.getString("대여일");
-                int moiveId = rs.getInt("movie_ID");
+                int moiveId = rs.getInt("Movie_ID");
 
                 // 💡 버그 수정: rentalInfoDTO 생성자에 맞게 title, rentalDate, rentalId 전달
-                rentalInfoDTO rentaldto = new rentalInfoDTO(userID, userName, userAge, rentalid, title, rentalDate, moiveId);
+                rentalInfoDTO rentaldto = new rentalInfoDTO(userID, userName, userAge, Id, title, rentalDate, moiveId);
                 rentalList.add(rentaldto);
             }
         } catch (SQLException ex) {
@@ -211,21 +211,15 @@ public class dvdDao {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             // 쿼리 내용은 그대로 유지
-            rs=stmt.executeQuery("SELECT " +
-                    "user_id" +
-                    "이름" +
-                    "나이" +
-                    "아이디" +
-                    "비밀번호" +
-                    "FROM " +
-                    "    user "
+            rs = stmt.executeQuery(
+                    "SELECT user_id, 이름, 나이, 아이디, 비밀번호 FROM user"
             );
             while(rs.next()) {
                 int userid = rs.getInt("user_id");
                 String name = rs.getString("이름");
-                int age = rs.getInt("age");
+                int age = rs.getInt("나이");
                 String id = rs.getString("아이디");
-                String password = rs.getString("password");
+                String password = rs.getString("비밀번호");
                 UserDTO userdto= new UserDTO(userid,name,age,id,password);
                 Userlist.add(userdto);
             }

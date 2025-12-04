@@ -18,16 +18,13 @@ public class dvdService {
 
         return dao.findAllDvd();
     }
-
     public List<UserDTO> getUser(){
         return dao.findAllUser();
     }
-
     //대여된 DVD 데이터 호출
     public List<rentalInfoDTO> getAllRents(int userId) {
         return dao.findAllRents(userId);
     }
-
 
     //DVD 대여
     public void rentMovie(int userId,int movieId) {
@@ -56,22 +53,9 @@ public class dvdService {
         );
     }
 
-/*
-    public void returnMovie(int movieId, int userId) {
 
-        List<rentalInfoDTO>Ids = dao.findAllRents(userId);
-
-        rentalInfoDTO Id = null;
-
-        for(rentalInfoDTO a : Ids) {
-            if(a.getMovieId() == movieId) {
-                Id = a;
-                break;
-            }
-        }
-        dao.returnMovie( userId, movieId);
+    public void returnMovie(int rentalId) {
+        dao.returnMovie(rentalId);
     }
-
- */
 
 }

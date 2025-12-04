@@ -41,54 +41,42 @@ public class dvdController {
         return dvdService.getAllRents(userId);
     }
 
-    // DVD 대여 (JWT 기반)
     @PostMapping("/rentMovie")
     public String rentMovie(@RequestBody RequestDTO request,
                             HttpServletRequest httpRequest) {
 
-        // ✅ JwtInterceptor에서 넣어둔 username 꺼내기
-        String username = (String) httpRequest.getAttribute("username");
-        if (username == null) {
-            // 인터셉터에서 대부분 걸러지겠지만 혹시 모르니 한 번 더 체크
+        String id = (String) httpRequest.getAttribute("id");
+        if (id == null) {
             return "{\"success\": false, \"message\": \"토큰이 없습니다.\"}";
         }
 
-        // ✅ username으로 유저 정보 조회
-        UserDTO user = userService.findByUsername(username);
-        if (user == null) {
-            return "{\"success\": false, \"message\": \"유저를 찾을 수 없습니다.\"}";
-        }
-
+        UserDTO user = userService.findByUsername(id);
         Integer movieId = request.getMovieId();
-        Integer userId = request.getUser_Id();
-
-        String movieTitle = request.getMovieTitle();
 
         try {
-            // ✅ 이제 name/age는 JWT 기반 유저 정보 사용
-            dvdService.rentMovie(userId,movieId);
-            return "{\"success\": true}";
+            dvdService.rentMovie(user.getUserid(), movieId);
+            return "{\"success\": true, \"message\": \"대여 완료\"}";
         } catch (IllegalStateException e) {
-            return "{\"success\": false}";
+            return "{\"success\": false, \"message\": \"" + e.getMessage() + "\"}";
         }
     }
 
-    /*
-    @PostMapping("/returnMovie")
-        public String returnMovie(@RequestBody rentalInfoDTO rentalinfo){
 
-        int movieId = rentalinfo.getMovieId();
-        int userId = rentalinfo.getUserId();
+
+    @PostMapping("/returnMovie")
+    public String returnMovie(@RequestBody Map<String, Integer> request) {
+
+        Integer rentalId = request.get("Id");
+        if (rentalId == null) {
+            return "{\"success\": false, \"message\": \"Rental ID 없음\"}";
+        }
 
         try {
-            dvdService.returnMovie(movieId, userId);
+            dvdService.returnMovie(rentalId);
             return "{\"success\": true}";
-        }
-        catch (IllegalStateException e){
+        } catch (Exception e) {
             return "{\"success\": false}";
         }
-
     }
-    *
-     */
+
 }

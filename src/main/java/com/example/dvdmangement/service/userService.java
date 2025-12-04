@@ -44,7 +44,7 @@ public class userService {
     }
 
     // username으로 유저 정보 조회 (JWT에서 사용)
-    public UserDTO findByUsername(String username) {
-        return userDao.findByUsername(username);
+    public UserDTO findByUsername(String id) {
+        return userDao.findByUsername(id);
     }
 }
