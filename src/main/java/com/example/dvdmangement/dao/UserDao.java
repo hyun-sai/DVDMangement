@@ -45,8 +45,8 @@ public class UserDao {
     public void save(UserDTO user) {
         String sql = "INSERT INTO user(이름, 나이, 아이디, 비밀번호) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+       try (Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, user.getName());
             pstmt.setInt(2, user.getAge());
